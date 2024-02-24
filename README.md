@@ -52,6 +52,13 @@ npx tailwind init -p
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+4.1=add the follwin details in the pluggin property of tailwind config
+
+    '''
+    require("daisyui"), require("@tailwindcss/line-clamp")
+    '''
+
 ''' 5. add pluggin and dependencies
 '''
 "@reduxjs/toolkit": "^2.2.1",
