@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function carouselSlide({
   image,
   tittle,
@@ -6,7 +8,7 @@ function carouselSlide({
   totalSlides,
 }) {
   return (
-    <div id={`slide1${slideNumber}`} className="carousel-item relative w-full">
+    <div id={`slide${slideNumber}`} className="carousel-item relative w-full">
       <div className="flex flex-col items-center justify-center gap-4 px-[15%]">
         <img
           src={image}
