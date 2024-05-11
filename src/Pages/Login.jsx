@@ -45,7 +45,7 @@ function SignUp() {
 
   return (
     <HomeLayout>
-      <div className="  flex overflow-x-auto item-center justify-center h-[100]">
+      <div className="  flex overflow-x-auto item-center justify-center min-h-[90vh]">
         <form
           noValidate
           onSubmit={onLogin}
