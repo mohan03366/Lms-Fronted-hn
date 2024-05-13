@@ -7,7 +7,6 @@ const initialState = {
 };
 
 export const getAllCourses = createAsyncThunk("/course/get", async () => {
-  console.log("hello");
   try {
     const response = axios.get("http://localhost:5006/api/v1/courses", {
       credentials: true,
