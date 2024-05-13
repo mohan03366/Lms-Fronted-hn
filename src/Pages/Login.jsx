@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { login } from "../Redux/Slices/AuthSlice";
 
-function SignUp() {
+function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -103,4 +103,4 @@ function SignUp() {
     </HomeLayout>
   );
 }
-export default SignUp;
+export default Login;
