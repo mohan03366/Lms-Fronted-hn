@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomeLayout from "../Layouts/HomeLayout";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -34,8 +34,8 @@ function SignUp() {
     //dispatch create account action
 
     const response = await dispatch(login(loginData));
-    console.log(response);
-    if (response?.payload?.data) navigate("/");
+
+    if (response?.payload?.success) navigate("/");
 
     setLoginData({
       email: "",

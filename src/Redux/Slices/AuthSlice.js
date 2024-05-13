@@ -35,24 +35,37 @@ export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
   }
 });
 
+// export const login = createAsyncThunk("/auth/login", async (data) => {
+//   try {
+//     const res = axios.post("http://localhost:5006/api/v1/user/login/", data, {
+//       credentials: true,
+//     });
+//     //console.log(data);
+//     toast.promise(res, {
+//       loading: "wait! authentication in progress",
+//       success: (data) => {
+//         return data?.data?.message;
+//       },
+//       error: "failed to login",
+//     });
+//     console.log(res);
+//     return (await res).data;
+//   } catch (error) {
+//     console.log(error);
+//     toast.error(error?.response?.data?.message);
+//   }
+// });
 export const login = createAsyncThunk("/auth/login", async (data) => {
   try {
-    const res = axios.post("http://localhost:5006/api/v1/user/login/", data, {
-      credentials: true,
-    });
-    //console.log(data);
-    toast.promise(res, {
-      loading: "wait! authentication in progress",
-      success: (data) => {
-        return data?.data?.message;
-      },
-      error: "failed to login",
-    });
-
-    return await res;
+    const res = await axios.post(
+      "http://localhost:5006/api/v1/user/login/",
+      data
+    );
+    toast.success(res.data.message);
+    return res.data;
   } catch (error) {
-    console.log(error);
-    toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message || "Failed to log in");
+    throw error;
   }
 });
 
@@ -83,6 +96,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
+        //console.log("Hello from Response");
         localStorage.setItem("data", JSON.stringify(action?.payload?.user));
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("role", action?.payload?.user?.role);
