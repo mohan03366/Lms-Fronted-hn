@@ -15,34 +15,31 @@ function CreateCourse() {
     category: "",
     createdBy: "",
     description: "",
-    thumbnails: "null",
+    thumbnails: null, // Use null instead of "null"
     previewImage: "",
   });
 
   function handleImageUpload(e) {
-    e.preventDefault();
-    const uploadedImage = e.target.files[0]; // Fixed typo here
+    const uploadedImage = e.target.files[0];
     if (uploadedImage) {
-      const fileReader = new FileReader(); // Capitalized FileReader here
+      const fileReader = new FileReader();
       fileReader.readAsDataURL(uploadedImage);
-      fileReader.addEventListener("load", function () {
-        setUserInput({
-          ...userInput,
-          previewImage: this.result,
+      fileReader.onload = () => {
+        setUserInput((prev) => ({
+          ...prev,
+          previewImage: fileReader.result,
           thumbnails: uploadedImage,
-        });
-      });
+        }));
+      };
     }
   }
 
   function handleUserInput(e) {
-    // Added e as parameter here
     const { name, value } = e.target;
-
-    setUserInput({
-      ...userInput,
+    setUserInput((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   }
 
   async function onFormSubmit(e) {
@@ -58,15 +55,13 @@ function CreateCourse() {
       return;
     }
     const response = await dispatch(createNewCourse(userInput));
-    console.log(response?.payload?.success);
-
     if (response?.payload?.success) {
       setUserInput({
         title: "",
         category: "",
         createdBy: "",
         description: "",
-        thumbnails: "null",
+        thumbnails: null,
         previewImage: "",
       });
       navigate("/courses");
@@ -81,12 +76,13 @@ function CreateCourse() {
           onSubmit={onFormSubmit}
           className="flex flex-col justify-center gap-5 rounded-lg p-4 text-white w-[700px] my-10 shadow-[0_0_10px_black] relative"
         >
-          <Link className="absolute top-5 text-2xl link text-accent cursor-pointer">
+          <Link
+            to="/previous-page"
+            className="absolute top-5 text-2xl link text-accent cursor-pointer"
+          >
             <AiOutlineArrowLeft />
           </Link>
-
           <h1 className="text-center text-2xl font-bold ">Create New Course</h1>
-
           <main className="grid grid-cols-2 gap-x-10">
             <div className="gap-y-6">
               <div>
@@ -99,7 +95,7 @@ function CreateCourse() {
                     />
                   ) : (
                     <div className="w-full h-44 m-auto flex items-center justify-center border">
-                      <h1 className="font-bold text-lg ">
+                      <h1 className="font-bold text-lg">
                         Upload Your Course Thumbnails
                       </h1>
                     </div>
@@ -123,7 +119,7 @@ function CreateCourse() {
                   type="text"
                   name="title"
                   id="title"
-                  placeholder="Enter your Course tittle"
+                  placeholder="Enter your Course title"
                   className="bg-transparent px-2 py-1 border"
                   value={userInput.title}
                   onChange={handleUserInput}
@@ -147,7 +143,7 @@ function CreateCourse() {
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label htmlFor="createdBy" className="text-lg font-semibold">
+                <label htmlFor="category" className="text-lg font-semibold">
                   Course category
                 </label>
                 <input
@@ -161,14 +157,12 @@ function CreateCourse() {
                   onChange={handleUserInput}
                 />
               </div>
-
               <div className="flex flex-col gap-1">
                 <label htmlFor="description" className="text-lg font-semibold">
                   Course description
                 </label>
                 <textarea
                   required
-                  type="text"
                   name="description"
                   id="description"
                   placeholder="Enter your Course description"
@@ -179,7 +173,6 @@ function CreateCourse() {
               </div>
             </div>
           </main>
-
           <button className="w-full py-2 rounded-sm font-semibold text-lg cursor-pointer bg-yellow-600 hover:bg-yellow-400 transition-all ease-in-out">
             Create Course
           </button>

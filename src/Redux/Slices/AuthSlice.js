@@ -7,16 +7,16 @@ import { json } from "react-router-dom";
 const initialState = {
   isLoggedIn: localStorage.getItem("isLoggedIn") || false,
   role: localStorage.getItem("role") || "",
-  data: localStorage.getItem("data") || {},
+  data: JSON.parse(localStorage.getItem("data")) || {},
 };
 
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
   try {
     const res = axios.post(
-      "http://localhost:5006/api/v1/user/register/",
+      "http://localhost:5007/api/v1/user/register/",
       data,
       {
-        credentials: true,
+        withCredentials: true,
       }
     );
     console.log(data);
@@ -35,31 +35,14 @@ export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
   }
 });
 
-// export const login = createAsyncThunk("/auth/login", async (data) => {
-//   try {
-//     const res = axios.post("http://localhost:5006/api/v1/user/login/", data, {
-//       credentials: true,
-//     });
-//     //console.log(data);
-//     toast.promise(res, {
-//       loading: "wait! authentication in progress",
-//       success: (data) => {
-//         return data?.data?.message;
-//       },
-//       error: "failed to login",
-//     });
-//     console.log(res);
-//     return (await res).data;
-//   } catch (error) {
-//     console.log(error);
-//     toast.error(error?.response?.data?.message);
-//   }
-// });
 export const login = createAsyncThunk("/auth/login", async (data) => {
   try {
     const res = await axios.post(
-      "http://localhost:5006/api/v1/user/login/",
-      data
+      "http://localhost:5007/api/v1/user/login/",
+      data,
+      {
+        withCredentials: true,
+      }
     );
     toast.success(res.data.message);
     return res.data;
@@ -71,13 +54,14 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
 
 export const logout = createAsyncThunk("/auth/logout", async () => {
   try {
-    const res = axios.get("http://localhost:5006/api/v1/user/logout/", {
-      credentials: true,
+    const res = axios.get("http://localhost:5007/api/v1/user/logout/", {
+      withCredentials: true,
     });
     //console.log(data);
     toast.promise(res, {
       loading: "wait! logout in progress",
       success: (data) => {
+        //console.log(data?.data?.message);
         return data?.data?.message;
       },
       error: "failed to logout",

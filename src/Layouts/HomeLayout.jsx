@@ -103,7 +103,7 @@ function HomeLayout({ children }) {
                 <li className="absolute bottom-4 w-[90%]">
                   <div className="w-full flex justify-center items-center ">
                     <button className=" btn-primary  bg-blue-500 px-4 py-1 font-semibold rounded-md w-full">
-                      <Link to="/user/profile">Profile</Link>
+                      <Link to="/user/Profile">Profile</Link>
                     </button>
 
                     <button className="  btn-secondary bg-pink-600  px-4 py-1 font-semibold rounded-md w-full">
