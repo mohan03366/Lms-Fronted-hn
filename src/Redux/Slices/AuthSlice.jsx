@@ -10,7 +10,7 @@ const initialState = {
   data: (() => {
     try {
       const data = localStorage.getItem("data");
-      console.log("MY DATA ", data);
+      // console.log("MY DATA ", data);
       return data ? JSON.parse(data) : {};
     } catch (error) {
       console.error("Error parsing localStorage data:", error);
