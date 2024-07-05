@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { createNewCourse } from "../../Redux/Slices/courseSlice";
@@ -9,13 +9,14 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 function CreateCourse() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.course);
 
   const [userInput, setUserInput] = useState({
     title: "",
     category: "",
     createdBy: "",
     description: "",
-    thumbnails: null, // Use null instead of "null"
+    thumbnails: null,
     previewImage: "",
   });
 
@@ -55,7 +56,7 @@ function CreateCourse() {
       return;
     }
     const response = await dispatch(createNewCourse(userInput));
-    if (response?.payload?.success) {
+    if (response.payload && !response.error) {
       setUserInput({
         title: "",
         category: "",
@@ -173,9 +174,14 @@ function CreateCourse() {
               </div>
             </div>
           </main>
-          <button className="w-full py-2 rounded-sm font-semibold text-lg cursor-pointer bg-yellow-600 hover:bg-yellow-400 transition-all ease-in-out">
-            Create Course
+          <button
+            type="submit"
+            className="w-full py-2 rounded-sm font-semibold text-lg cursor-pointer bg-yellow-600 hover:bg-yellow-400 transition-all ease-in-out"
+            disabled={loading}
+          >
+            {loading ? "Creating..." : "Create Course"}
           </button>
+          {error && <div className="text-red-500">{error}</div>}
         </form>
       </div>
     </HomeLayout>

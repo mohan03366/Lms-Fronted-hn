@@ -4,14 +4,14 @@ import toast from "react-hot-toast";
 
 const initialState = {
   key: "",
-  subscriptionId: "",
+  subscription_id: "", // Changed to lowercase 'i'
   isPaymentVerified: false,
   allPayments: {},
   finalMonths: {},
   monthlySalesRecord: [],
 };
 
-export const razorpayId = createAsyncThunk("/razorpay/getId", async () => {
+export const getRazorPayId = createAsyncThunk("/razorpay/getId", async () => {
   try {
     const response = await axios.get(
       "http://localhost:5007/api/v1/payments/razorpay-key",
@@ -19,6 +19,7 @@ export const razorpayId = createAsyncThunk("/razorpay/getId", async () => {
         withCredentials: true,
       }
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     toast.error("failed to load data");
@@ -26,17 +27,19 @@ export const razorpayId = createAsyncThunk("/razorpay/getId", async () => {
 });
 
 export const purchaseCourseBundle = createAsyncThunk(
-  "/purchaseCourse",
+  "/purchase/Course",
   async () => {
     try {
       const response = await axios.post(
         "http://localhost:5007/api/v1/payments/subscribe",
+        {},
         {
           withCredentials: true,
         }
       );
       return response.data;
     } catch (error) {
+      console.log(error?.response?.data?.message);
       toast.error(error?.response?.data?.message);
     }
   }
@@ -116,21 +119,18 @@ const razorpaySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(razorpayId.fulfilled, (state, action) => {
+      .addCase(getRazorPayId.fulfilled, (state, action) => {
         state.key = action?.payload?.key;
       })
       .addCase(purchaseCourseBundle.fulfilled, (state, action) => {
-        state.subscriptionId = action?.payload?.subscriptionId;
+        state.subscription_id = action?.payload?.subscription_id; // Changed to lowercase 'i'
+        console.log("djvdsk::", action.payload);
       })
       .addCase(verifyUserPayment.fulfilled, (state, action) => {
-        toast.success(action?.payload?.success);
-        state.isPaymentVerified = action?.payload?.success;
-      })
-      .addCase(verifyUserPayment.rejected, (state, action) => {
         toast.success(action?.payload?.message);
         state.isPaymentVerified = action?.payload?.success;
       })
-      .addCase(verifyUserPayment.fulfilled, (state, action) => {
+      .addCase(verifyUserPayment.rejected, (state, action) => {
         toast.success(action?.payload?.message);
         state.isPaymentVerified = action?.payload?.success;
       })

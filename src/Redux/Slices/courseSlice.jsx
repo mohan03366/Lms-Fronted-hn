@@ -55,6 +55,7 @@ export const createNewCourse = createAsyncThunk(
         formData,
         {
           withCredentials: true,
+          //credentials: true,
         }
       );
       toast.promise(response, {
@@ -62,7 +63,8 @@ export const createNewCourse = createAsyncThunk(
         success: "Course created successfully",
         error: "Failed to create course",
       });
-      return response.data;
+      console.log("heloo server", (await response).data);
+      return (await response).data;
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
